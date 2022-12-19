@@ -1,0 +1,43 @@
+ public  void sendNotification(String name, String message, String token) {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+            String url = "https://fcm.googleapis.com/fcm/send";
+
+            JSONObject data = new JSONObject();
+            data.put("title", name);
+            data.put("body", message);
+            JSONObject notificationData = new JSONObject();
+            notificationData.put("notification", data);
+            notificationData.put("to", token);
+
+            JsonObjectRequest request = new JsonObjectRequest(url, notificationData
+                    , new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    // Toast.makeText(ChatActivity.this, "success", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "notifcation", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+                    String key = "Key=AAAA57EqWR0:APA91bE6zmq-qaWeMblfHiyPArHdszdI_-a-ZYVwejTk4feaRNlFOVpyOz33G8naCJE0TKL4-FIsuextfoFOfvKsoqh9XhlqR0DMQ_jIVCxy2WDb4Jw2qWB1t4vMWv5mnfwoejCF1Rlp";
+                    map.put("Content-Type", "application/json");
+                    map.put("Authorization", key);
+
+                    return map;
+                }
+            };
+
+            queue.add(request);
+
+
+        } catch (Exception ex) {
+
+        }
+    }

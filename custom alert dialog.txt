@@ -1,0 +1,13 @@
+ Context context;
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity5.this);
+
+                View view = getLayoutInflater().inflate(R.layout.dialog, null);
+                alertDialogBuilder.setView(view);
+                alertDialogBuilder.setCancelable(false);
+                final AlertDialog dialog = alertDialogBuilder.create();
+
+                EditText editText = (EditText) view.findViewById(R.id.edit);
+                imageView4 = (ImageView) view.findViewById(R.id.img);
+                Button button = (Button) view.findViewById(R.id.cancel);
+                Button button1 = (Button) view.findViewById(R.id.post);
+     dialog.show();

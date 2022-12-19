@@ -1,0 +1,23 @@
+ for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Userdata b = dataSnapshot.getValue(Userdata.class);
+//                        b.setPid(dataSnapshot.getKey());
+
+                        list.add(b);
+
+                    }
+
+                    adapter.notifyDataSetChanged();
+############PARTIcular user data get###################
+DatabaseReference reference=FirebaseDatabase.getInstance().getReference("dar");
+Query query=reference.orderByChild("type").equalTo("umer");
+query.addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+
+    }
+});

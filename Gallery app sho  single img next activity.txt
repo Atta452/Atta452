@@ -1,0 +1,48 @@
+ static List<File> pdflist1;
+    RecyclerView recyclerView;
+    AAdapter aAdapter;
+
+
+
+
+ public ArrayList<File> filepdf(File file) {
+        ArrayList<File> fileArrayList=new ArrayList<>();
+        File[] files=file.listFiles();
+        for (File singlefile: files) {
+
+            if(singlefile.isDirectory() && !singlefile.isHidden()){
+                fileArrayList.addAll(filepdf(singlefile));
+
+            }
+            else{
+                if(singlefile.getName().endsWith(".jpg")){
+                    fileArrayList.add(singlefile);
+                }
+            }
+        }
+        return fileArrayList;
+    }
+
+
+
+    public void displayfile(){
+
+        recyclerView.setHasFixedSize(true);
+//        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        pdflist1=new ArrayList<>();
+        pdflist1.addAll(filepdf(Environment.getExternalStorageDirectory()));
+        aAdapter=new AAdapter(pdflist1,this);
+        recyclerView.setAdapter(aAdapter);
+    }
+
+ 
+
+
+
+
+imageView=findViewById(R.id.img);
+        Intent intent=getIntent();
+        String img=intent.getStringExtra("img");
+        imageView.setImageURI(Uri.parse(img));

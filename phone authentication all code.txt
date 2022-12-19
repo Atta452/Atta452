@@ -1,0 +1,212 @@
+Get sha1 key 
+side ty gradle da icon bania hona a (signingreport) a likh k hit enter    nap dy 
+
+implementation 'com.github.joielechong:countrycodepicker:2.4.2'
+    implementation 'com.github.rajputmukesh748:MukeshOtpView:1.0.0'
+
+
+ 
+
+
+
+
+<TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/phone_number_edt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="phone"
+            android:inputType="phone"/>
+
+    </LinearLayout>
+    <Button
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/p"
+        android:text="create"/>
+    <EditText
+        android:id="@+id/phone_number_edt1"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:hint="phone"
+        android:inputType="phone"/>
+    <Button
+        android:visibility="gone"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/p1"
+        android:text="enter code"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package com.example.myapplication3;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
+
+import java.util.concurrent.TimeUnit;
+
+public class Phone extends AppCompatActivity {
+    CountryCodePicker countryCodePicker;
+    EditText editText,editText1;
+    Button button,button1;
+    String phoneNumber;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    String mverificationid;
+    FirebaseAuth mAuth;
+    String verificationcode;
+    PhoneAuthProvider.ForceResendingToken mResendingToken;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_phone);
+
+//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+
+
+        countryCodePicker=findViewById(R.id.ccp);
+
+        editText=findViewById(R.id.phone_number_edt);
+        editText1=findViewById(R.id.phone_number_edt1);
+        button=findViewById(R.id.p);
+        button1=findViewById(R.id.p1);
+        mAuth=FirebaseAuth.getInstance();
+
+        countryCodePicker.registerPhoneNumberTextView(editText);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verificationcode=editText1.getText().toString();
+                if(verificationcode.equals("")){
+                    Toast.makeText(getApplicationContext(), "Entered code", Toast.LENGTH_SHORT).show();
+                }else {
+
+
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mverificationid, verificationcode);
+                    signInWithPhoneAuthCredential(credential);
+                }
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                phoneNumber=countryCodePicker.getFullNumberWithPlus();
+                PhoneAuthOptions options =
+                        PhoneAuthOptions.newBuilder(mAuth)
+                                .setPhoneNumber(phoneNumber)       // Phone number to verify
+                                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                .setActivity(Phone.this)                 // Activity (for callback binding)
+                                .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                                .build();
+                PhoneAuthProvider.verifyPhoneNumber(options);
+
+            }
+        });
+        mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                String code=phoneAuthCredential.getSmsCode();
+                if(code!=null){
+                    verify(verificationcode);
+                }
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                Toast.makeText(getApplicationContext(), "sorry", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                mverificationid=s;
+                mResendingToken=forceResendingToken;
+                Toast.makeText(getApplicationContext(), "code sent", Toast.LENGTH_SHORT).show();
+                editText1.setVisibility(View.VISIBLE);
+                editText.setVisibility(View.GONE);
+                button1.setVisibility(View.VISIBLE);
+                button.setVisibility(View.GONE);
+                countryCodePicker.setVisibility(View.GONE);
+
+            }
+        };
+    }
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent intent=new Intent(getApplicationContext(),MainActivity9.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+
+                        }
+                    }
+                });
+    }
+    public void verify(String code){
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mverificationid, verificationcode);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    }
+

@@ -1,0 +1,75 @@
+#####################################agr toolbar cha he lana ha search ty adalgna hafy tuja tariqa ni kam krna#################
+ @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top,menu);
+        MenuItem menuItem=menu.findItem(R.id.home);
+        SearchView searchView= (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Type here to search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText.toString());
+                return true;
+            }
+        });
+        return true;
+    }
+#####################Search vie dikahn lia##################
+ <item
+        android:id="@+id/home"
+
+app:showAsAction="ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="" />
+###############################
+<include
+            layout="@layout/toolb"
+            android:id="@+id/bar"/>    
+Toolbar toolbar =findViewById(R.id.bar);
+        setSupportActionBar(toolbar);
+
+@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       getMenuInflater().inflate(R.menu.top,menu);
+       return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.one:
+                Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.one1:
+                Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.one2:
+                Intent intent=new Intent(MainActivity.this,MainActivity5.class);
+                startActivity(intent);
+               break;
+
+        }
+        return  true;
+    }
+textView2.addTextChangedListener(new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        filter(s.toString());
+    }
+});

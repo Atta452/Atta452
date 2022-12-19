@@ -1,0 +1,21 @@
+############## kity b click listener laga ka ja uda source ty destination da name lika dy any khod he track bana dana ha g map ty
+######33333#########################################
+
+
+
+
+
+void Display(String s,String d){
+
+                try {
+                    Uri uri= Uri.parse("https://www.google.co.in/maps/dir/"+s+"/"+d);
+                    Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }catch (ActivityNotFoundException e){
+                    Uri uri= Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
+                    Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+    }

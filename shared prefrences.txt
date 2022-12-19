@@ -1,0 +1,17 @@
+ void dd(){
+        String f= textView.getText().toString();
+        SharedPreferences sharedPreferences=getSharedPreferences("shared",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("text",f);
+        editor.putBoolean("switch",aSwitch.isChecked());
+        editor.apply();
+    }
+    void load(){
+        String text;
+        Boolean aBoolean;
+        SharedPreferences sharedPreferences=getSharedPreferences("shared",MODE_PRIVATE);
+        text=sharedPreferences.getString("text","");
+        aBoolean=sharedPreferences.getBoolean("switch",false);
+        textView.setText(text);
+        aSwitch.setChecked(aBoolean);
+    }

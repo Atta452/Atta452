@@ -1,0 +1,62 @@
+####################################
+Top pr ja
+###################################
+RecyclerView recyclerView;
+    ArrayList<Cmodel> list;
+    CAdapter cAdapter;
+    EditText editText;
+
+
+
+
+###################################
+
+
+
+
+
+editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+filter(s.toString());
+            }
+        });
+
+
+
+
+
+
+##################################################
+method
+###################################################
+
+ public  void filter(String text){
+        ArrayList<Cmodel> list1=new ArrayList<>();
+        for (Cmodel model: list) {
+            if(model.getName().toLowerCase().contains(text.toLowerCase())){
+                list1.add(model);
+            }
+            cAdapter.List1(list1);
+
+        }
+    }
+
+#######################################################
+Adapter method
+###################################################
+
+    public void List1(ArrayList<Cmodel> list1) {
+        list=list1;
+        notifyDataSetChanged();
+    }

@@ -1,0 +1,28 @@
+ StorageReference storageReference;
+    FirebaseStorage storage;
+
+
+
+
+
+                        storageReference = FirebaseStorage.getInstance().getReference("userpost").child(String.valueOf(System.currentTimeMillis()));
+                        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+
+                                        Cmodel cmodel = new Cmodel(editText.getText().toString(), uri.toString(), FirebaseAuth.getInstance().getUid());
+
+                                        FirebaseDatabase.getInstance().getReference("userpost").push().setValue(cmodel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                editText.setText("");
+                                                Toast.makeText(getContext(), "post uploaded", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });

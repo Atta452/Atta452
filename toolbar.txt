@@ -1,0 +1,22 @@
+ 
+ Toolbar toolbar =findViewById(R.id.toolbarq);
+        setSupportActionBar(toolbar);
+
+
+
+
+@Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.cmenu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.set:
+                Toast.makeText(getApplicationContext(), "toast", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return  true;
+    }

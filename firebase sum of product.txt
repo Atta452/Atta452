@@ -1,0 +1,34 @@
+ FirebaseDatabase.getInstance().getReference("budget").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    list1.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        B b = dataSnapshot.getValue(B.class);
+//                        b.setUid(dataSnapshot.getKey());
+//                        if(!.getUid().equals(FirebaseAuth.getInstance().getUid())){
+                            list1.add(b);
+//                        }
+
+                    }
+//                    recyclerView.hideShimmerAdapter();
+                    bAdapter.notifyDataSetChanged();
+                    int total=0;
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Map<String,Object> map= (Map<String, Object>) dataSnapshot.getValue();
+                        Object object=map.get("price");
+                        int ptotal=Integer.parseInt(String.valueOf(object));
+                        total+=ptotal;
+                        textView.setText(String.valueOf(total));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+

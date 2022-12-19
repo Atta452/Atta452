@@ -1,0 +1,19 @@
+ spinner1 = findViewById(R.id.pin);
+ list=new ArrayList<String>();
+
+        adapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,list);
+        spinner1.setAdapter(adapter);
+
+        FirebaseDatabase.getInstance().getReference("budget1").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    B b = dataSnapshot.getValue(B.class);
+
+                    list.add(b.getName().toString());
+                    adapter.notifyDataSetChanged();
+
+
+                }
+            }

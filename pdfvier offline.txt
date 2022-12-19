@@ -1,0 +1,17 @@
+
+implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+<com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+############## main activity ja a ana ha ty ady lia a library istamal kiti ha###########
+int position=-1;
+
+        Intent intent=getIntent();
+
+        position=intent.getIntExtra("position",-1);
+        pdfView.fromFile(MainActivity2.pdflist.get(position)).load();

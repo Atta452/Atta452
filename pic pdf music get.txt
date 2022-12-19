@@ -1,0 +1,53 @@
+
+    public ArrayList<File> filepdf(File file) {
+        ArrayList<File> fileArrayList=new ArrayList<>();
+        File[] files=file.listFiles();
+        for (File singlefile: files) {
+
+            if(singlefile.isDirectory() && !singlefile.isHidden()){
+                fileArrayList.addAll(filepdf(singlefile));
+
+            }
+            else{
+                if(singlefile.getName().endsWith(".mp4")){
+                    fileArrayList.add(singlefile);
+                }
+            }
+        }
+        return fileArrayList;
+    }
+
+
+
+    public void displayfile(){
+        recyclerView=findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+//        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        pdflist=new ArrayList<>();
+        pdflist.addAll(filepdf(Environment.getExternalStorageDirectory()));
+        pAdapter=new PAdapter(pdflist,this);
+        recyclerView.setAdapter(pAdapter);
+    }
+
+
+
+
+
+
+
+##################################3
+adapter
+#################################
+holder.textView.setText(pdflist.get(position).getName());
+        Bitmap bitmap= ThumbnailUtils.createVideoThumbnail(pdflist.get(position).getPath(), MediaStore.Images.Thumbnails.MICRO_KIND);
+        holder.imageView.setImageBitmap(bitmap);
+holder.cardView.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(context,MainActivity3.class);
+        intent.putExtra("position",position);
+        context.startActivity(intent);
+    }
+});

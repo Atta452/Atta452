@@ -1,0 +1,5 @@
+<string-array name="spin">
+        <item>food</item>
+        <item>travel</item>
+        <item>mood</item>
+    </string-array>
